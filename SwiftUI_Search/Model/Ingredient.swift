@@ -8,8 +8,8 @@
 import Foundation
 
 struct Ingredient: Hashable, Codable {
-  var quantity: String
-  var name: String
-  var type: String
-  var emoji: String
+    var quantity: String
+    var name: String
+    var type: String
+    var emoji: String
 }

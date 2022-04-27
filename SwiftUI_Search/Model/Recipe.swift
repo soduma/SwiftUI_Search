@@ -8,9 +8,9 @@
 import Foundation
 
 struct Recipe: Hashable, Codable {
-  var name: String
-  var ingredients: [Ingredient]
-  var steps: [String]
-  var timers: [Int]
-  var imageURL: String
+    var name: String
+    var ingredients: [Ingredient]
+    var steps: [String]
+    var timers: [Int]
+    var imageURL: String
 }

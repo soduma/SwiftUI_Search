@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct SwiftUI_SearchApp: App {
     init() {
-      UITableView.appearance().backgroundColor = UIColor.white
+        UITableView.appearance().backgroundColor = UIColor.white
     }
     
     var body: some Scene {

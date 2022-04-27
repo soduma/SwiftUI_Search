@@ -8,25 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-  var chefRecipesModel = ChefRecipesModel()
-
-  var body: some View {
-    NavigationView {
-      RecipesView()
-      RecipeDetailView(recipe: chefRecipesModel.recipes[0])
+    var chefRecipesModel = ChefRecipesModel()
+    
+    var body: some View {
+        NavigationView {
+            RecipesView()
+            RecipeDetailView(recipe: chefRecipesModel.recipes[0])
+        }
+        .accentColor(Color("rw-green"))
     }
-    .accentColor(Color("rw-green"))
-  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-  static var previews: some View {
-    Group {
-      ContentView()
-        .previewDevice("iPhone 12 Pro")
-
-      ContentView()
-        .previewDevice("iPad Pro (9.7-inch)")
+    static var previews: some View {
+        Group {
+            ContentView()
+                .previewDevice("iPhone 12 Pro")
+            
+            ContentView()
+                .previewDevice("iPad Pro (9.7-inch)")
+        }
     }
-  }
 }

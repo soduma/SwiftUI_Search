@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct RecipeImage: View {
-  var imageURL: String
-
-  var body: some View {
-    AsyncImage(url: URL(string: imageURL)) { image in
-      image
-        .resizable()
-        .scaledToFit()
-        .cornerRadius(5)
-    } placeholder: {
-      ZStack {
-        Image("rw-logo")
-          .resizable()
-          .scaledToFit()
-        ProgressView()
-      }
+    var imageURL: String
+    
+    var body: some View {
+        AsyncImage(url: URL(string: imageURL)) { image in
+            image
+                .resizable()
+                .scaledToFit()
+                .cornerRadius(5)
+        } placeholder: {
+            ZStack {
+                Image("rw-logo")
+                    .resizable()
+                    .scaledToFit()
+                ProgressView()
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
-    .frame(maxWidth: .infinity)
-  }
 }
 
 struct RecipeImage_Previews: PreviewProvider {
-  static var previews: some View {
-    Group {
-      RecipeImage(imageURL: ChefRecipesModel().recipes[0].imageURL)
-        .previewDevice("iPhone 12 Pro")
-
-      RecipeImage(imageURL: ChefRecipesModel().recipes[0].imageURL)
-        .previewDevice("iPad Pro (9.7-inch)")
+    static var previews: some View {
+        Group {
+            RecipeImage(imageURL: ChefRecipesModel().recipes[0].imageURL)
+                .previewDevice("iPhone 12 Pro")
+            
+            RecipeImage(imageURL: ChefRecipesModel().recipes[0].imageURL)
+                .previewDevice("iPad Pro (9.7-inch)")
+        }
     }
-  }
 }
