@@ -8,22 +8,44 @@
 import SwiftUI
 
 struct RecipesView: View {
-    var chefRecipesModel = ChefRecipesModel()
-    @State var searchQuery = ""
-    @State var filteredRecipes = ChefRecipesModel().recipes
+    @Environment(\.isSearching) var isSearching
+    @Binding var searchQuery: String
+    @Binding var isSearchingIngredient: Bool
     
-    func filterRecipes() {
+    var chefRecipesModel = ChefRecipesModel()
+    var filteredRecipes: [Recipe] {
         if searchQuery.isEmpty {
-            filteredRecipes = chefRecipesModel.recipes
+            return chefRecipesModel.recipes
         } else {
-            filteredRecipes = chefRecipesModel.recipes.filter({ recipe in
-                recipe.name.localizedCaseInsensitiveContains(searchQuery)
-            })
+            if isSearchingIngredient {
+                let filteredRecipes = chefRecipesModel.recipes.filter {
+                    !$0.ingredients.filter { ingredient in
+                        ingredient.emoji == searchQuery
+                    }.isEmpty
+                }
+                return filteredRecipes
+            } else {
+                return chefRecipesModel.recipes.filter {
+                    $0.name.localizedCaseInsensitiveContains(searchQuery)
+                }
+            }
         }
     }
     
     var body: some View {
         VStack {
+            Toggle("**Search By Ingredients**", isOn: $isSearchingIngredient)
+                .tint(Color("rw-green"))
+                .foregroundColor(Color("rw-green"))
+                .font(.body)
+                .padding([.leading, .trailing])
+            
+            if isSearching {
+                Text("Search Results: \(filteredRecipes.count) of \(chefRecipesModel.recipes.count)")
+                    .foregroundColor(Color("rw-green"))
+                    .opacity(0.5)
+            }
+            
             List {
                 ForEach(filteredRecipes, id: \.self) { recipe in
                     NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
@@ -34,13 +56,6 @@ struct RecipesView: View {
             }
             .listStyle(.inset)
             .padding()
-        }
-        .searchable(text: $searchQuery, prompt: "Search by Meal Name")
-        .onChange(of: searchQuery, perform: { _ in
-            filterRecipes()
-        })
-        .onSubmit(of: .search) {
-            filterRecipes()
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -58,12 +73,12 @@ struct RecipesView_Previews: PreviewProvider {
     static var recipes = ChefRecipesModel().recipes
     
     static var previews: some View {
-        Group {
-            ContentView()
-                .previewDevice("iPhone 12 Pro")
-            
-            ContentView()
-                .previewDevice("iPad Pro (9.7-inch)")
-        }
+        RecipesView(searchQuery: .constant(""),
+                    isSearchingIngredient: .constant(false))
+        .previewDevice("iPhone SE (3rd generation)")
+        
+        RecipesView(searchQuery: .constant(""),
+                    isSearchingIngredient: .constant(false))
+        .previewDevice("iPad Pro (12.9-inch) (5th generation)")
     }
 }
