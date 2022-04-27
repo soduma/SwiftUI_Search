@@ -9,11 +9,23 @@ import SwiftUI
 
 struct RecipesView: View {
     var chefRecipesModel = ChefRecipesModel()
+    @State var searchQuery = ""
+    @State var filteredRecipes = ChefRecipesModel().recipes
+    
+    func filterRecipes() {
+        if searchQuery.isEmpty {
+            filteredRecipes = chefRecipesModel.recipes
+        } else {
+            filteredRecipes = chefRecipesModel.recipes.filter({ recipe in
+                recipe.name.localizedCaseInsensitiveContains(searchQuery)
+            })
+        }
+    }
     
     var body: some View {
         VStack {
             List {
-                ForEach(chefRecipesModel.recipes, id: \.self) { recipe in
+                ForEach(filteredRecipes, id: \.self) { recipe in
                     NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
                         Text(recipe.name)
                             .foregroundColor(Color("rw-dark"))
@@ -22,6 +34,13 @@ struct RecipesView: View {
             }
             .listStyle(.inset)
             .padding()
+        }
+        .searchable(text: $searchQuery, prompt: "Search by Meal Name")
+        .onChange(of: searchQuery, perform: { _ in
+            filterRecipes()
+        })
+        .onSubmit(of: .search) {
+            filterRecipes()
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

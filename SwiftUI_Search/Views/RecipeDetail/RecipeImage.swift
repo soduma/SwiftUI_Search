@@ -18,7 +18,7 @@ struct RecipeImage: View {
                 .cornerRadius(5)
         } placeholder: {
             ZStack {
-                Image("rw-logo")
+                Image(systemName: "applelogo")
                     .resizable()
                     .scaledToFit()
                 ProgressView()
